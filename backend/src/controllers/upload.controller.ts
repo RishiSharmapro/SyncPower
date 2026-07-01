@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import prisma from "../lib/prisma.js";
 import { Request, Response } from "express";
 import parseCSV from "../services/csv.service.js";
@@ -9,7 +10,6 @@ const uploadController = async (req: Request, res: Response) => {
 
     try {
         const parsedData = await parseCSV(req.file.path);
-        console.log("Parsed CSV Data:", Object.keys(parsedData[0]));
         const ignoredColumns = [
             "Category",
             "Sub-category",
@@ -78,7 +78,7 @@ const uploadController = async (req: Request, res: Response) => {
                     }
                 });
 
-                const productSpecification = await prisma.productSpecification.upsert({
+                await prisma.productSpecification.upsert({
                     where: {
                         productId_specId: {
                             productId: product.id,
@@ -99,6 +99,11 @@ const uploadController = async (req: Request, res: Response) => {
     } catch (error) {
         console.error("Error processing CSV file:", error);
         return res.status(500).json({ error: "Error processing CSV file" });
+    }
+    finally {
+        if (req.file) {
+            await fs.unlink(req.file.path).catch(err => console.error("Error deleting uploaded file:", err));
+        }
     }
 };
 
