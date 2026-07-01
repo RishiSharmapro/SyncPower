@@ -172,8 +172,7 @@ Category
 ## Screenshots
 
 ### Product Catalog
-
-_Add screenshot here_
+<img width="1470" height="842" alt="Screenshot 2026-07-01 at 6 35 13 PM" src="https://github.com/user-attachments/assets/92bd40b0-f7f0-426b-949e-ec05374b1b5f" />
 
 ---
 
